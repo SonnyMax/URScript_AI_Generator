@@ -173,7 +173,4 @@ tests/
 ├── unit/         # Testy validátoru, safety supervisoru, script senderu
 ├── integration/  # Testy API endpointů
 └── e2e/          # End-to-end (vyžaduje běžící URSim + LM Studio)
-
-qwen3.5-4b_qlora_dataset_urscript.yaml         # QLoRA dataset — URScript generace
-qwen3.5-4b_qlora_dataset_pattern_matching.yaml # QLoRA dataset — pattern matching
 ```
