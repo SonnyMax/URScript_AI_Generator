@@ -1,0 +1,27 @@
+services:
+  ursim:
+    image: universalrobots/ursim_polyscopex:latest
+    privileged: true
+    environment:
+      # Accept UR's EULA
+      - ROBOT_TYPE=UR5
+    ports:
+      - "30001:30001"   # primary client
+      - "30002:30002"   # secondary client / script upload
+      - "30003:30003"   # real-time client
+      - "30004:30004"   # RTDE
+      - "5900:5900"     # VNC (optional, for visual debugging)
+      - "80:80"         # PolyscopeX web UI
+      - "4840:4840"     # OPC-UA (optional)
+    volumes:
+      - ursim_data:/ursim
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "30004"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+
+volumes:
+  ursim_data:

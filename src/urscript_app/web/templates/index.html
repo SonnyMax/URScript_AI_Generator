@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URScript AI Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">UR<span>Script</span> AI</div>
+    <div id="status-bar">
+      <span class="dot" id="dot-conn"></span>
+      <span id="lbl-conn">Connecting…</span>
+      &nbsp;|&nbsp;
+      <span class="dot" id="dot-safety"></span>
+      <span id="lbl-safety">—</span>
+      &nbsp;|&nbsp;
+      <span class="dot" id="dot-stop"></span>
+      <span id="lbl-stop">—</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: Prompt input -->
+    <section class="panel" aria-label="Prompt">
+      <div class="panel-head">Prompt</div>
+      <div class="panel-body">
+        <textarea
+          id="prompt-input"
+          placeholder="Describe what the robot should do…&#10;&#10;e.g. Move to home position, then pick up a part at (0.3, -0.2, 0.4) and place it at (0.3, 0.2, 0.4)"
+          aria-label="Natural language robot instruction"
+        ></textarea>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" id="generate-btn" aria-label="Generate URScript">
+            <span class="spinner" aria-hidden="true"></span>
+            Generate
+          </button>
+        </div>
+
+        <div id="validation-panel" aria-live="polite" aria-label="Validation results"></div>
+
+        <div class="btn-row">
+          <button class="btn btn-ghost" id="validate-btn" title="Re-validate code in editor">
+            <span class="spinner" aria-hidden="true"></span>
+            Validate
+          </button>
+          <button class="btn btn-primary" id="execute-btn" disabled title="Send to URSim and execute">
+            <span class="spinner" aria-hidden="true"></span>
+            Execute
+          </button>
+        </div>
+
+        <div id="exec-status-msg" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- CENTER: Code editor -->
+    <section class="panel" aria-label="Generated code">
+      <div class="panel-head">URScript Output</div>
+      <div class="panel-body">
+        <pre
+          class="code-display"
+          id="code-output"
+          contenteditable="true"
+          spellcheck="false"
+          aria-label="Generated URScript code — editable"
+          aria-multiline="true"
+          role="textbox"
+        >// Generated code will appear here</pre>
+      </div>
+    </section>
+
+    <!-- RIGHT: Live status + STOP -->
+    <aside class="panel" aria-label="Robot status">
+      <div class="panel-head">Robot Status</div>
+      <div class="panel-body">
+        <div class="stat-row"><span class="stat-label">Robot mode</span><span class="stat-val" id="stat-robot-mode">—</span></div>
+        <div class="stat-row"><span class="stat-label">Safety mode</span><span class="stat-val" id="stat-safety-mode">—</span></div>
+        <div class="stat-row"><span class="stat-label">Runtime</span><span class="stat-val" id="stat-runtime-state">—</span></div>
+        <div class="stat-row" style="flex-direction:column;align-items:flex-start;gap:4px">
+          <span class="stat-label">Joints (rad)</span>
+          <span class="stat-val" id="stat-joints" style="font-size:11px;word-break:break-all">—</span>
+        </div>
+        <div class="stat-row" style="flex-direction:column;align-items:flex-start;gap:4px">
+          <span class="stat-label">TCP pose</span>
+          <span class="stat-val" id="stat-tcp" style="font-size:11px;word-break:break-all">—</span>
+        </div>
+
+        <div id="stop-section">
+          <button
+            class="btn btn-danger"
+            id="stop-btn"
+            aria-label="Emergency stop — press Escape twice as keyboard shortcut"
+            title="Emergency stop (Esc × 2)"
+          >
+            ⏹ STOP
+          </button>
+          <p class="stop-hint">Keyboard: <kbd>Esc</kbd> × 2</p>
+          <button
+            class="btn btn-ghost clear-stop-btn"
+            id="clear-stop-btn"
+            style="display:none"
+            aria-label="Clear safety stop"
+          >
+            Clear Safety Stop
+          </button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
