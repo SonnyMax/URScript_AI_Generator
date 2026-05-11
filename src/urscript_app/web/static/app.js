@@ -15,6 +15,62 @@ const api = {
   },
 };
 
+// --- Robot target selector ---
+const robotSelect = document.getElementById("robot-select");
+
+async function loadTargets() {
+  try {
+    const res = await api.get("/api/robot-target");
+    if (!res.success) return;
+    robotSelect.innerHTML = "";
+    for (const t of res.data.targets) {
+      const opt = document.createElement("option");
+      opt.value = t.name;
+      opt.textContent = `${t.name} (${t.ip})`;
+      if (t.active) opt.selected = true;
+      robotSelect.appendChild(opt);
+    }
+  } catch (_) {}
+}
+
+robotSelect.addEventListener("change", async () => {
+  const target = robotSelect.value;
+  try {
+    await api.post("/api/robot-target", { target });
+  } catch (_) {
+    await loadTargets(); // revert on failure
+  }
+  await checkHealth();
+});
+
+const healthBtn = document.getElementById("health-btn");
+const healthIndicator = document.getElementById("health-indicator");
+
+async function checkHealth() {
+  healthIndicator.textContent = "probing…";
+  healthIndicator.style.color = "var(--text-muted)";
+  try {
+    const res = await api.get("/api/robot-target/health");
+    if (!res.success) { healthIndicator.textContent = "error"; return; }
+    const { reachable, ports } = res.data;
+    if (reachable) {
+      healthIndicator.textContent = "✓ reachable";
+      healthIndicator.style.color = "var(--success)";
+    } else {
+      const down = [];
+      if (!ports.script_30002) down.push("30002");
+      if (!ports.rtde_30004)   down.push("30004");
+      healthIndicator.textContent = `✗ unreachable (${down.join(", ")})`;
+      healthIndicator.style.color = "var(--danger)";
+    }
+  } catch (_) {
+    healthIndicator.textContent = "✗ probe failed";
+    healthIndicator.style.color = "var(--danger)";
+  }
+}
+
+healthBtn.addEventListener("click", checkHealth);
+
 // --- DOM refs ---
 const promptInput   = document.getElementById("prompt-input");
 const generateBtn   = document.getElementById("generate-btn");
@@ -235,3 +291,4 @@ function setLoading(btn, loading) {
 }
 
 connectSSE();
+loadTargets();

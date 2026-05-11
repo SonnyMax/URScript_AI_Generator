@@ -12,6 +12,12 @@
 <body>
   <header>
     <div class="logo">UR<span>Script</span> AI</div>
+    <div id="target-selector" aria-label="Robot target">
+      <label for="robot-select">Target:</label>
+      <select id="robot-select" aria-label="Select robot target"></select>
+      <button class="btn btn-ghost" id="health-btn" title="Check port reachability" style="padding:2px 8px;font-size:11px">Probe</button>
+      <span id="health-indicator" style="font-size:11px;color:var(--text-muted)">—</span>
+    </div>
     <div id="status-bar">
       <span class="dot" id="dot-conn"></span>
       <span id="lbl-conn">Connecting…</span>

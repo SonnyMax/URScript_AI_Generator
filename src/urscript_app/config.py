@@ -1,4 +1,12 @@
+import threading
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+ROBOT_TARGETS: dict[str, str] = {
+    "localhost": "127.0.0.1",
+    "Pepa":      "192.168.0.94",
+    "Tom":       "192.168.0.96",
+    "Olda":      "192.168.0.98",
+}
 
 
 class Settings(BaseSettings):
@@ -28,6 +36,8 @@ class Settings(BaseSettings):
 
 
 _settings: Settings | None = None
+_active_target: str = "localhost"
+_target_lock = threading.Lock()
 
 
 def get_settings() -> Settings:
@@ -35,3 +45,21 @@ def get_settings() -> Settings:
     if _settings is None:
         _settings = Settings()
     return _settings
+
+
+def get_active_host() -> str:
+    with _target_lock:
+        return ROBOT_TARGETS[_active_target]
+
+
+def get_active_target() -> str:
+    with _target_lock:
+        return _active_target
+
+
+def set_active_target(name: str) -> None:
+    if name not in ROBOT_TARGETS:
+        raise ValueError(f"Unknown target '{name}'. Valid: {list(ROBOT_TARGETS)}")
+    with _target_lock:
+        global _active_target
+        _active_target = name

@@ -12,7 +12,7 @@ import threading
 from dataclasses import dataclass, field
 
 from urscript_app.robot.rtde_pure import RTDEClient as _PureRTDE, RuntimeState
-from urscript_app.config import get_settings
+from urscript_app.config import get_settings, get_active_host
 
 
 class RTDEConnectionError(Exception):
@@ -53,10 +53,11 @@ class RTDEClient:
 
     def connect(self) -> None:
         s = get_settings()
-        con = _PureRTDE(s.ursim_host, s.rtde_port)
+        host = get_active_host()
+        con = _PureRTDE(host, s.rtde_port)
         if not con.connect():
             raise RTDEConnectionError(
-                f"RTDE connect failed to {s.ursim_host}:{s.rtde_port}"
+                f"RTDE connect failed to {host}:{s.rtde_port}"
             )
 
         # Try extended first, fall back to minimal
@@ -65,10 +66,10 @@ class RTDEClient:
         if not ok:
             # Reconnect — setup_monitoring failure may leave socket in bad state
             con.disconnect()
-            con = _PureRTDE(s.ursim_host, s.rtde_port)
+            con = _PureRTDE(host, s.rtde_port)
             if not con.connect():
                 raise RTDEConnectionError(
-                    f"RTDE reconnect failed to {s.ursim_host}:{s.rtde_port}"
+                    f"RTDE reconnect failed to {host}:{s.rtde_port}"
                 )
             ok = con.setup_monitoring(_VARS_MINIMAL, frequency=s.rtde_frequency)
             if not ok:

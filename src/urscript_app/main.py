@@ -11,6 +11,7 @@ from urscript_app.api.routes_generate import router as generate_router
 from urscript_app.api.routes_validate import router as validate_router
 from urscript_app.api.routes_execute import router as execute_router
 from urscript_app.api.routes_status import router as status_router
+from urscript_app.api.routes_robot_target import router as robot_target_router
 from urscript_app.api.exception_handlers import register_exception_handlers
 
 BASE_DIR = Path(__file__).parent
@@ -34,6 +35,7 @@ def create_app() -> FastAPI:
     app.include_router(validate_router, prefix="/api")
     app.include_router(execute_router, prefix="/api")
     app.include_router(status_router, prefix="/api")
+    app.include_router(robot_target_router, prefix="/api")
 
     @app.get("/healthz")
     async def healthz() -> dict:

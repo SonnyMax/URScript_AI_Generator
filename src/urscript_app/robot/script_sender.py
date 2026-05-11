@@ -1,7 +1,7 @@
 """Send URScript programs to the robot via the primary/script port (30002)."""
 from __future__ import annotations
 import socket
-from urscript_app.config import get_settings
+from urscript_app.config import get_settings, get_active_host
 
 
 class ScriptSendError(Exception):
@@ -19,7 +19,7 @@ def _ensure_wrapped(code: str) -> str:
 
 def send_script(code: str, host: str | None = None, port: int | None = None) -> None:
     s = get_settings()
-    host = host or s.ursim_host
+    host = host or get_active_host()
     port = port or s.script_port
     payload = _ensure_wrapped(code).encode("utf-8")
     try:

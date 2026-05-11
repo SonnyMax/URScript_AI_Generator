@@ -22,3 +22,4 @@ htmlcov/
 *.svg
 uv.lock
 *.jsonl
+*.yaml
