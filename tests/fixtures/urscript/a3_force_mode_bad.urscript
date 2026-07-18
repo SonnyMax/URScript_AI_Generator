@@ -1,0 +1,8 @@
+# A3 (bad): force_mode called with 4 args and scalars where 6-vectors are
+# required -- must fail with E-ARITY (and later E-ARGKIND).
+def program():
+  pose = p[0.3, -0.2, 0.2, 0.0, 3.1415, 0.0]
+  force_mode(pose, 8.0, 2, 0.005)
+  sleep(2.0)
+  end_force_mode()
+end

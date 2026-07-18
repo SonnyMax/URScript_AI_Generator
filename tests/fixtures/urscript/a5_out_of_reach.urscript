@@ -1,0 +1,6 @@
+# A5: target 1.5 m from the base -- far beyond the UR5e reach of 0.85 m.
+# Must fail with E-WORKSPACE.
+def program():
+  target = p[1.5, 0.0, 0.3, 0.0, 3.1415, 0.0]
+  movel(target, a=0.5, v=0.2)
+end

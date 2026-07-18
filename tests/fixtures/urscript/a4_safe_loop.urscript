@@ -1,0 +1,9 @@
+# A4: bounded while-loop at half speed between two joint targets.
+def program():
+  i = 0
+  while i < 3:
+    movej([0.0, -1.5708, 1.5708, -1.5708, -1.5708, 0.0], a=0.7, v=0.5)
+    movej([0.5, -1.2, 1.2, -1.5708, -1.5708, 0.0], a=0.7, v=0.5)
+    i = i + 1
+  end
+end

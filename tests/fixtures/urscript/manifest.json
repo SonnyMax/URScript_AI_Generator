@@ -1,0 +1,9 @@
+{
+  "a1_move_home.urscript": "valid",
+  "a2_pick_place_good.urscript": "valid",
+  "a2_pick_place_bad_gripper.urscript": "warning:W-GRIPPER",
+  "a3_force_mode_good.urscript": "valid",
+  "a3_force_mode_bad.urscript": "error:E-ARITY",
+  "a4_safe_loop.urscript": "valid",
+  "a5_out_of_reach.urscript": "error:E-WORKSPACE"
+}

@@ -1,0 +1,7 @@
+# A3 (good): force_mode with the correct 5-argument signature.
+def program():
+  task = p[0.3, -0.2, 0.2, 0.0, 3.1415, 0.0]
+  force_mode(task, [0, 0, 1, 0, 0, 0], [0.0, 0.0, -30.0, 0.0, 0.0, 0.0], 2, [0.1, 0.1, 0.1, 0.5, 0.5, 0.5])
+  sleep(2.0)
+  end_force_mode()
+end

@@ -1,0 +1,7 @@
+# A1: move to home, then to an in-reach target at conservative speed.
+def program():
+  home = [0.0, -1.5708, 1.5708, -1.5708, -1.5708, 0.0]
+  movej(home, a=0.5, v=0.5)
+  target = p[0.3, -0.2, 0.25, 0.0, 3.1415, 0.0]
+  movel(target, a=0.5, v=0.2)
+end
